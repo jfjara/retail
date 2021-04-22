@@ -24,6 +24,8 @@ public class PriceServiceTest {
         Optional<Price> price = service.find("2020-06-14-10.00.00", 35455, 1);
         Assert.assertEquals(35.50, price.get().getPrice(), 0D);
         Assert.assertEquals(1, price.get().getPriceList());
+        Assert.assertEquals(35455, price.get().getProductId());
+        Assert.assertEquals(1, price.get().getBrandId());
     }
 
     @Test
@@ -31,6 +33,8 @@ public class PriceServiceTest {
         Optional<Price> price = service.find("2020-06-14-16.00.00", 35455, 1);
         Assert.assertEquals(25.45, price.get().getPrice(), 0D);
         Assert.assertEquals(2, price.get().getPriceList());
+        Assert.assertEquals(35455, price.get().getProductId());
+        Assert.assertEquals(1, price.get().getBrandId());
     }
 
     @Test
@@ -38,6 +42,8 @@ public class PriceServiceTest {
         Optional<Price> price = service.find("2020-06-14-21.00.00", 35455, 1);
         Assert.assertEquals(35.50, price.get().getPrice(), 0D);
         Assert.assertEquals(1, price.get().getPriceList());
+        Assert.assertEquals(35455, price.get().getProductId());
+        Assert.assertEquals(1, price.get().getBrandId());
     }
 
     @Test
@@ -45,6 +51,8 @@ public class PriceServiceTest {
         Optional<Price> price = service.find("2020-06-15-10.00.00", 35455, 1);
         Assert.assertEquals(30.50, price.get().getPrice(), 0D);
         Assert.assertEquals(3, price.get().getPriceList());
+        Assert.assertEquals(35455, price.get().getProductId());
+        Assert.assertEquals(1, price.get().getBrandId());
     }
 
     @Test
@@ -52,6 +60,8 @@ public class PriceServiceTest {
         Optional<Price> price = service.find("2020-06-15-21.00.00", 35455, 1);
         Assert.assertEquals(38.95, price.get().getPrice(), 0D);
         Assert.assertEquals(4, price.get().getPriceList());
+        Assert.assertEquals(35455, price.get().getProductId());
+        Assert.assertEquals(1, price.get().getBrandId());
     }
 
 }
