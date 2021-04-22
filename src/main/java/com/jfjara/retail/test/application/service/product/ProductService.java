@@ -24,8 +24,13 @@ public class ProductService implements IProductService {
 	private ProductMapper mapper;
 
 	@Override
-	public Optional<List<Product>> find(Date applicationDate, long productId, long brandId) {
-		return mapper.toDomainModel(repository.find(applicationDate, productId, brandId));
+	public Optional<Product> find(Date applicationDate, long productId, long brandId) {
+		List<com.jfjara.retail.test.infraestructure.db.springdata.entity.Product> products = repository.find(applicationDate, productId, brandId);
+		com.jfjara.retail.test.infraestructure.db.springdata.entity.Product product = null;
+		if (products != null && !products.isEmpty()) {
+			product = products.get(0);
+		}
+		return mapper.toDomainModel(product);
 	}
 	
 }
