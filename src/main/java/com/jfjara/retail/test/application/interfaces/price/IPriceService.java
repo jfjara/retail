@@ -9,6 +9,6 @@ import com.jfjara.retail.test.domain.model.Price;
 
 public interface IPriceService {
 	
-	Optional<List<Price>> find(String applicationDateText, long productId, long brandId) throws AbstractCustomException;
+	Optional<Price> find(String applicationDateText, long productId, long brandId) throws AbstractCustomException;
 
 }

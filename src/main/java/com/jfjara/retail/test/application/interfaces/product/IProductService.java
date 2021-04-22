@@ -8,6 +8,6 @@ import com.jfjara.retail.test.domain.model.Product;
 
 public interface IProductService {
 
-	Optional<List<Product>> find(Date applicationDate, long productId, long brandId);
+	Optional<Product> find(Date applicationDate, long productId, long brandId);
 	
 }
