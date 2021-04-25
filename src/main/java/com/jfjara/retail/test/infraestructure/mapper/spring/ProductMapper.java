@@ -4,16 +4,19 @@ import com.jfjara.retail.test.domain.model.Price;
 import com.jfjara.retail.test.infraestructure.db.springdata.entity.Product;
 import com.jfjara.retail.test.infraestructure.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
+@Qualifier("manuallyProductMapper")
 public class ProductMapper implements Mapper<Product, com.jfjara.retail.test.domain.model.Product> {
 
     @Autowired
-    private PriceMapper priceMapper;
+    @Qualifier("dozerPriceMapper")
+    private Mapper mapper;
 
     @Override
     public Optional<com.jfjara.retail.test.domain.model.Product> toDomainModel(Product entityObject) {
@@ -40,7 +43,7 @@ public class ProductMapper implements Mapper<Product, com.jfjara.retail.test.dom
         if (entityObject != null) {
             domainObject = new com.jfjara.retail.test.domain.model.Product();
             domainObject.setName(entityObject.getName());
-            Optional<List<Price>> prices = priceMapper.toDomainModel(entityObject.getPrices());
+            Optional<List<Price>> prices = mapper.toDomainModel(entityObject.getPrices());
             if (prices.isPresent()) {
                 domainObject.setPrices(prices.get());
             }

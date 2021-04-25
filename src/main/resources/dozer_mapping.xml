@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+    <mapping>
+        <class-a>com.jfjara.retail.test.infraestructure.db.springdata.entity.Price</class-a>
+        <class-b>com.jfjara.retail.test.domain.model.Price</class-b>
+        <field>
+            <a>priceList</a>
+            <b>priceList</b>
+        </field>
+        <field>
+            <a>currency</a>
+            <b>currency</b>
+        </field>
+
+        <field>
+            <a>priority</a>
+            <b>priority</b>
+        </field>
+
+        <field>
+            <a>startDate</a>
+            <b>startDate</b>
+        </field>
+
+        <field>
+            <a>endDate</a>
+            <b>endDate</b>
+        </field>
+
+        <field>
+            <a>price</a>
+            <b>price</b>
+        </field>
+
+        <field>
+            <a>product.id</a>
+            <b>productId</b>
+        </field>
+
+        <field>
+            <a>brand.id</a>
+            <b>brandId</b>
+        </field>
+
+    </mapping>
+</mappings>

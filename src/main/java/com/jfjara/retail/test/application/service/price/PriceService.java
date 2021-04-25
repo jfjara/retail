@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import com.jfjara.retail.test.domain.exceptions.AbstractCustomException;
 import com.jfjara.retail.test.domain.utils.DateUtils;
-import com.jfjara.retail.test.infraestructure.mapper.spring.PriceMapper;
+import com.jfjara.retail.test.infraestructure.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,8 @@ public class PriceService implements IPriceService {
 	private IPriceRepository repository;
 
 	@Autowired
-	private PriceMapper mapper;
+	@Qualifier("dozerPriceMapper")
+	private Mapper mapper;
 
 	@Override
 	public Optional<Price> find(String applicationDateText, long productId, long brandId) throws AbstractCustomException {

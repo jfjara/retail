@@ -3,14 +3,11 @@ package com.jfjara.retail.test.infraestructure.mapper.spring;
 import com.jfjara.retail.test.domain.model.Currency;
 import com.jfjara.retail.test.infraestructure.db.springdata.entity.Price;
 import com.jfjara.retail.test.infraestructure.mapper.Mapper;
-import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 public class PriceMapper implements Mapper<Price, com.jfjara.retail.test.domain.model.Price> {
 
     @Override
