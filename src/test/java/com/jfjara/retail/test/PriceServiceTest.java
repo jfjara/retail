@@ -1,67 +1,109 @@
 package com.jfjara.retail.test;
 
-import com.jfjara.retail.test.application.service.price.PriceService;
-import com.jfjara.retail.test.domain.exceptions.AbstractCustomException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfjara.retail.test.domain.model.Price;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Optional;
+import java.io.IOException;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = TestApplication.class)
+@WebAppConfiguration
 public class PriceServiceTest {
 
     @Autowired
-    private PriceService service;
+    private WebApplicationContext webApplicationContext;
 
-    @Test
-    public void test_1() throws AbstractCustomException {
-        Optional<Price> price = service.find("2020-06-14-10.00.00", 35455, 1);
-        Assert.assertEquals(35.50, price.get().getPrice(), 0D);
-        Assert.assertEquals(1, price.get().getPriceList());
-        Assert.assertEquals(35455, price.get().getProductId());
-        Assert.assertEquals(1, price.get().getBrandId());
+    private MockMvc mockMvc;
+
+    @Before
+    public void before() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+
+    private Price getPriceFromMvc(String date, long productId, long brandId) throws Exception {
+
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .path("/api/prices/find")
+                .queryParam("productId", productId)
+                .queryParam("brandId", brandId)
+                .queryParam("applicationDate", date)
+                .build();
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri.toUriString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(200, status);
+        String contentResponse = mvcResult.getResponse().getContentAsString();
+        return transformToObject(contentResponse, Price.class);
+    }
+
+
+    private <T> T transformToObject(String json, Class<T> clazz) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, clazz);
     }
 
     @Test
-    public void test_2() throws AbstractCustomException {
-        Optional<Price> price = service.find("2020-06-14-16.00.00", 35455, 1);
-        Assert.assertEquals(25.45, price.get().getPrice(), 0D);
-        Assert.assertEquals(2, price.get().getPriceList());
-        Assert.assertEquals(35455, price.get().getProductId());
-        Assert.assertEquals(1, price.get().getBrandId());
+    public void test_1() throws Exception {
+        Price price = getPriceFromMvc("2020-06-14-10.00.00", 35455, 1);
+        Assert.assertEquals(35.50, price.getPrice(), 0D);
+        Assert.assertEquals(1, price.getPriceList());
+        Assert.assertEquals(35455, price.getProductId());
+        Assert.assertEquals(1, price.getBrandId());
     }
 
     @Test
-    public void test_3() throws AbstractCustomException {
-        Optional<Price> price = service.find("2020-06-14-21.00.00", 35455, 1);
-        Assert.assertEquals(35.50, price.get().getPrice(), 0D);
-        Assert.assertEquals(1, price.get().getPriceList());
-        Assert.assertEquals(35455, price.get().getProductId());
-        Assert.assertEquals(1, price.get().getBrandId());
+    public void test_2() throws Exception {
+        Price price = getPriceFromMvc("2020-06-14-16.00.00", 35455, 1);
+        Assert.assertEquals(25.45, price.getPrice(), 0D);
+        Assert.assertEquals(2, price.getPriceList());
+        Assert.assertEquals(35455, price.getProductId());
+        Assert.assertEquals(1, price.getBrandId());
     }
 
     @Test
-    public void test_4() throws AbstractCustomException {
-        Optional<Price> price = service.find("2020-06-15-10.00.00", 35455, 1);
-        Assert.assertEquals(30.50, price.get().getPrice(), 0D);
-        Assert.assertEquals(3, price.get().getPriceList());
-        Assert.assertEquals(35455, price.get().getProductId());
-        Assert.assertEquals(1, price.get().getBrandId());
+    public void test_3() throws Exception {
+        Price price = getPriceFromMvc("2020-06-14-21.00.00", 35455, 1);
+        Assert.assertEquals(35.50, price.getPrice(), 0D);
+        Assert.assertEquals(1, price.getPriceList());
+        Assert.assertEquals(35455, price.getProductId());
+        Assert.assertEquals(1, price.getBrandId());
     }
 
     @Test
-    public void test_5() throws AbstractCustomException {
-        Optional<Price> price = service.find("2020-06-15-21.00.00", 35455, 1);
-        Assert.assertEquals(38.95, price.get().getPrice(), 0D);
-        Assert.assertEquals(4, price.get().getPriceList());
-        Assert.assertEquals(35455, price.get().getProductId());
-        Assert.assertEquals(1, price.get().getBrandId());
+    public void test_4() throws Exception {
+        Price price = getPriceFromMvc("2020-06-15-10.00.00", 35455, 1);
+        Assert.assertEquals(30.50, price.getPrice(), 0D);
+        Assert.assertEquals(3, price.getPriceList());
+        Assert.assertEquals(35455, price.getProductId());
+        Assert.assertEquals(1, price.getBrandId());
+    }
+
+    @Test
+    public void test_5() throws Exception {
+        Price price = getPriceFromMvc("2020-06-15-21.00.00", 35455, 1);
+        Assert.assertEquals(38.95, price.getPrice(), 0D);
+        Assert.assertEquals(4, price.getPriceList());
+        Assert.assertEquals(35455, price.getProductId());
+        Assert.assertEquals(1, price.getBrandId());
     }
 
 }

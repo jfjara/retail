@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jfjara.retail.test.application.repository.product.IProductRepository;
+import com.jfjara.retail.test.infraestructure.mapper.Mapper;
 import com.jfjara.retail.test.infraestructure.mapper.spring.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,12 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService implements IProductService {
 
-	@Qualifier("productRepository")
 	@Autowired
+	@Qualifier("productRepository")
 	private IProductRepository repository;
 
 	@Autowired
-	private ProductMapper mapper;
+	@Qualifier("manuallyProductMapper")
+	private Mapper mapper;
 
 	@Override
 	public Optional<Product> find(Date applicationDate, long productId, long brandId) {
