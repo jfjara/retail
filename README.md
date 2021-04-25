@@ -48,6 +48,8 @@ Se han utilizado las siguientes tecnologías
 * JUnit
 * Docker
 * Base de datos H2 con carga inicial de datos mediante un script
+* Mappers manuales y con librería Dozer
+* Conversores JSON de Jackson
 
 
 
