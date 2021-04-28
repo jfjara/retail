@@ -20,6 +20,8 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = TestApplication.class)
@@ -39,12 +41,14 @@ public class PriceServiceTest {
 
     private Price getPriceFromMvc(String date, long productId, long brandId) throws Exception {
 
+        Map<String, String> collectionValues = new HashMap<>();
+        collectionValues.put("productId", String.valueOf(productId));
+        collectionValues.put("brandId", String.valueOf(brandId));
+        collectionValues.put("applicationDate", date);
+
         UriComponents uri = UriComponentsBuilder.newInstance()
-                .path("/api/prices/find")
-                .queryParam("productId", productId)
-                .queryParam("brandId", brandId)
-                .queryParam("applicationDate", date)
-                .build();
+                .path("/api/prices/{productId}/{brandId}/{applicationDate}/find").buildAndExpand(collectionValues);
+
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri.toUriString())
                 .accept(MediaType.APPLICATION_JSON))
